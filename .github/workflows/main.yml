@@ -28,7 +28,7 @@ jobs:
        - name: Update apt
          run: sudo apt-get update
        - name: Install dependencies of ada-mode and linuxdeploy
-         run: sudo apt-get install re2c fuse3
+         run: sudo apt-get install re2c libfuse2
        - name: Update
          run: alr index --update-all
        - name: Install alr2appimage

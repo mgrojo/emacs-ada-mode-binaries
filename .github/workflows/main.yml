@@ -34,14 +34,14 @@ jobs:
        - name: Install alr2appimage
          run: alr install alr2appimage
        - name: Get emacs_ada_mode
-         run: alr get emacs_ada_mode && cd emacs_ada_mode*
+         run: alr get emacs_ada_mode
        - name: Build
-         run: alr --non-interactive build --release
+         run: alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage
-         run: VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ~/.alire/bin/alr2appimage
+         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ~/.alire/bin/alr2appimage
        - name: Release
          uses: softprops/action-gh-release@v2
          with:
-           files: emacs_ada_mode*.AppImage
+           files: emacs_ada_mode*/emacs_ada_mode*.AppImage
            prerelease: true
            tag_name: latest_alire

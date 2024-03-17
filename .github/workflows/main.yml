@@ -35,6 +35,8 @@ jobs:
          run: alr install alr2appimage
        - name: Get emacs_ada_mode
          run: alr get emacs_ada_mode
+       - name: Patch gpr (remove when fixed upstream)
+         run: sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
        - name: Build
          run: alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage

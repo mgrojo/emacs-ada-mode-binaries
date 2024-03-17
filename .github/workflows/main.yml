@@ -1,0 +1,44 @@
+# Build using Alire.
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions: write-all
+
+  release:
+    name: Alire Latest
+    runs-on: ubuntu-20.04
+    steps:    
+       - name: Checkout
+         uses: actions/checkout@v2
+       - name: ada-actions/toolchain
+         uses: ada-actions/toolchain@ce2021
+         with:
+           distrib: community
+           target: native
+       - name: alire-project/setup-alire
+         uses: alire-project/setup-alire@v2
+         with:
+            branch: "master"
+       - name: Update apt
+         run: sudo apt-get update
+       - name: Update
+         run: alr index --update-all
+       - name: Install alr2appimage
+         run: alr install alr2appimage
+       - name: Get emacs_ada_mode
+         run: alr get emacs_ada_mode && cd emacs_ada_mode*
+       - name: Build
+         run: alr --non-interactive build --release
+       - name: Build AppImage
+         run: VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ~/.alire/bin/alr2appimage
+       - name: Release
+         uses: softprops/action-gh-release@v2
+         with:
+           files: emacs_ada_mode*.AppImage
+           prerelease: true
+           tag_name: latest_alire

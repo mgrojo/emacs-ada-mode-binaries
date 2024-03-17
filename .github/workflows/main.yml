@@ -27,8 +27,8 @@ jobs:
             branch: "master"
        - name: Update apt
          run: sudo apt-get update
-       - name: Install re2c
-         run: sudo apt-get install re2c
+       - name: Install dependencies of ada-mode and linuxdeploy
+         run: sudo apt-get install re2c fuse3
        - name: Update
          run: alr index --update-all
        - name: Install alr2appimage

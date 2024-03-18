@@ -42,7 +42,7 @@ jobs:
        - name: Build
          run: alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage
-         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ./alr2appimage-continuous-x86_64.AppImage
+         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-continuous-x86_64.AppImage
        - name: Release
          uses: softprops/action-gh-release@v2
          with:

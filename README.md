@@ -6,10 +6,10 @@ The AppImage acts as `ada_mode_wisi_lalr_parse`, but all the executables are ins
 ```
 chmod +x emacs_ada_mode-8.1.0-x86_64.AppImage
  ./emacs_ada_mode-8.1.0-x86_64.AppImage --appimage-extract
- mv squashfs-root/usr/bin ~/.local/bin
+ mv squashfs-root/usr/bin/* ~/.local/bin
 ```
 
-Make sure that ~/.local/bin is on the PATH or use any other directory already on it.
+Make sure that `~/.local/bin` is on the `PATH` or use any other directory already on it.
 
 Due to the version requirement on re2c, it was not possible to use the oldest supported Ubuntu LTS release, as recommended by the AppImage project. Consequently, older systems could have incompatiblities with the linked libc version.
 

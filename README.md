@@ -1,5 +1,14 @@
+[![Build](https://github.com/mgrojo/emacs-ada-mode-binaries/actions/workflows/main.yml/badge.svg)](https://github.com/mgrojo/alr2appimage/actions/workflows/main.yml)
+[![Alire](https://img.shields.io/endpoint?url=https://alire.ada.dev/badges/emacs_ada_mode.json)](https://alire.ada.dev/crates/emacs_ada_mode.html)
+[![Alire CI/CD](https://img.shields.io/endpoint?url=https://alire-crate-ci.ada.dev/badges/emacs_ada_mode.json)](https://alire-crate-ci.ada.dev/crates/emacs_ada_mode.html)
+[![Download][download-img]][download]
+[![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/ada-lang/Lobby)
+
+  [download-img]: https://img.shields.io/github/downloads/mgrojo/emacs-ada-mode-binaries/total.svg
+  [download]: https://github.com/mgrojo/emacs-ada-mode-binaries/releases
+  
 # emacs-ada-mode-binaries
-AppImages of the [Emacs ada-mode](https://www.nongnu.org/ada-mode/) executables can be found in the releases section.
+AppImages of the [Emacs ada-mode](https://www.nongnu.org/ada-mode/) executables can be found in the [releases](https://github.com/mgrojo/emacs-ada-mode-binaries/releases) section.
 
 The AppImage acts as `ada_mode_wisi_lalr_parse`, but all the executables are inside and can be extracted and directly used, since they are mostly statically linked. 
 

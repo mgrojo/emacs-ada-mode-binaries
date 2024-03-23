@@ -40,7 +40,7 @@ jobs:
        - name: Patch gpr and alire.toml (remove when fixed upstream)
          run: |
            sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
-           sed -i~ 's/gnat = "(>=11 & <2000) | >=2021"/gnat = "(=12 \& <2000) | >=2021"/' alire.toml
+           sed -i~ 's/gnat = "(>=11 & <2000) | >=2021"/gnat = "(=12 \& <2000) | >=2021"/' emacs_ada_mode*/alire.toml
        - name: Build
          run: alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage

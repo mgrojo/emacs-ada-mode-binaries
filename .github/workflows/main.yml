@@ -24,8 +24,10 @@ jobs:
          run: sudo apt-get update
        - name: Install dependencies of ada-mode and linuxdeploy
          run: sudo apt-get install re2c libfuse2 gnat-12 gprbuild
-       - name: Update
-         run: alr index --update-all
+       - name: Setup Alire
+         run: |
+           alr index --update-all
+           alr toolchain --select gnat_external=12.3.0 gprbuild=18.0.0
        - name: Get alr2appimage
          run: |
            curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-continuous-x86_64.AppImage

@@ -28,7 +28,7 @@ jobs:
        - name: Update apt
          run: sudo apt-get update
        - name: Install dependencies of ada-mode and linuxdeploy
-         run: sudo apt-get install re2c libfuse2
+         run: sudo apt-get install re2c libfuse2 gnat-12
        - name: Update
          run: alr index --update-all
        - name: Get alr2appimage
@@ -37,8 +37,10 @@ jobs:
            chmod +x alr2appimage-continuous-x86_64.AppImage
        - name: Get emacs_ada_mode
          run: alr get emacs_ada_mode
-       - name: Patch gpr (remove when fixed upstream)
-         run: sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
+       - name: Patch gpr and alire.toml (remove when fixed upstream)
+         run: |
+           sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
+           sed -i~ 's/gnat = "(>=11 & <2000) | >=2021"/gnat = "(=12 \& <2000) | >=2021"/' alire.toml
        - name: Build
          run: alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage

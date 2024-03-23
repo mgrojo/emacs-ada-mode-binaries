@@ -16,11 +16,6 @@ jobs:
     steps:    
        - name: Checkout
          uses: actions/checkout@v2
-       - name: ada-actions/toolchain
-         uses: ada-actions/toolchain@ce2021
-         with:
-           distrib: community
-           target: native
        - name: alire-project/setup-alire
          uses: alire-project/setup-alire@v2
          with:
@@ -28,19 +23,23 @@ jobs:
        - name: Update apt
          run: sudo apt-get update
        - name: Install dependencies of ada-mode and linuxdeploy
-         run: sudo apt-get install re2c libfuse2
-       - name: Update
-         run: alr index --update-all
+         run: sudo apt-get install re2c libfuse2 gnat-12 gprbuild
+       - name: Setup Alire
+         run: |
+           alr index --update-all
+           alr toolchain --select gnat_external=12.3.0 gprbuild=18.0.0
        - name: Get alr2appimage
          run: |
-           curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/continuous/alr2appimage-continuous-x86_64.AppImage
+           curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-continuous-x86_64.AppImage
            chmod +x alr2appimage-continuous-x86_64.AppImage
        - name: Get emacs_ada_mode
          run: alr get emacs_ada_mode
        - name: Patch gpr (remove when fixed upstream)
          run: sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
        - name: Build
-         run: alr --non-interactive -C emacs_ada_mode* build --release
+         run: |
+           alr toolchain --select gnat_external=12.3.0 gprbuild=18.0.0
+           alr --non-interactive -C emacs_ada_mode* build --release
        - name: Build AppImage
          run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-continuous-x86_64.AppImage
        - name: Release

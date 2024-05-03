@@ -30,8 +30,8 @@ jobs:
            alr toolchain --select gnat_external^12.3 gprbuild^18.0
        - name: Get alr2appimage
          run: |
-           curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-continuous-x86_64.AppImage
-           chmod +x alr2appimage-continuous-x86_64.AppImage
+           curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-0.9.3-x86_64.AppImage
+           chmod +x alr2appimage-0.9.3-x86_64.AppImage
        - name: Get emacs_ada_mode
          run: alr get emacs_ada_mode
        - name: Patch gpr (remove when fixed upstream)
@@ -41,7 +41,7 @@ jobs:
            alr toolchain --select gnat_external^12.3 gprbuild^18.0
            alr --non-interactive -C emacs_ada_mode* build --release -- -bargs -static
        - name: Build AppImage
-         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-continuous-x86_64.AppImage
+         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
        - name: Release
          uses: softprops/action-gh-release@v2
          with:

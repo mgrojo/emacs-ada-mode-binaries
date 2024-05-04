@@ -36,12 +36,12 @@ jobs:
          run: alr get emacs_ada_mode
        - name: Patch gpr (remove when fixed upstream)
          run: sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
-       - name: Build
-         run: |
-           alr toolchain --select gnat_external^12.3 gprbuild^18.0
-           alr --non-interactive -C emacs_ada_mode* build --release -- -bargs -static
        - name: Build AppImage
-         run: cd emacs_ada_mode* && VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
+         run: |
+           cd emacs_ada_mode*
+           alr toolchain --select gnat_external^12.3 gprbuild^18.0
+           alr --non-interactive build --release -- -bargs -static
+           VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
        - name: Release
          uses: softprops/action-gh-release@v2
          with:

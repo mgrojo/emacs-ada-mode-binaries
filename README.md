@@ -20,8 +20,12 @@ chmod +x emacs_ada_mode-8.1.0-x86_64.AppImage
 ./emacs_ada_mode-8.1.0-x86_64.AppImage --appimage-extract
  mv squashfs-root/usr/bin/* ~/.local/bin
 ```
-
 Make sure that `~/.local/bin` is on the `PATH` or use any other directory already on it.
+
+The executables are dynamically linked with GNAT 12. Thus, unless you have GNAT 12 libraries already installed, you have to move also the libraries to an appropriate place (e.g. present in `LD_LIBRARY_PATH`).
+```
+mv squashfs-root/usr/lib/* ~/.local/lib
+```
 
 Due to the version requirement on re2c, it was not possible to use the oldest supported Ubuntu LTS release, as recommended by the AppImage project. Consequently, older systems could have incompatiblities with the dynamically linked libc version.
 

@@ -27,7 +27,7 @@ jobs:
        - name: Setup Alire
          run: |
            alr index --update-all
-           alr toolchain --select gnat_external^12.3 gprbuild^18.0
+           alr toolchain --select gnat_external^12.3
        - name: Get alr2appimage
          run: |
            curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-0.9.3-x86_64.AppImage

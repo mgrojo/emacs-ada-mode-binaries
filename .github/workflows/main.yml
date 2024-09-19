@@ -40,7 +40,7 @@ jobs:
          run: |
            cd emacs_ada_mode*
            alr toolchain --select gnat_native^12 gprbuild^18.0
-           alr --force --non-interactive build --release -- -bargs -static
+           yes | alr --non-interactive build --release -- -bargs -static
            VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
        - name: Release
          uses: softprops/action-gh-release@v2

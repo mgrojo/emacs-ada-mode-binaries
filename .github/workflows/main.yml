@@ -12,7 +12,7 @@ permissions: write-all
 jobs:
   release:
     name: Alire Latest
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     steps:    
        - name: Checkout
          uses: actions/checkout@v2
@@ -23,23 +23,23 @@ jobs:
        - name: Update apt
          run: sudo apt-get update
        - name: Install dependencies of ada-mode and linuxdeploy
-         run: sudo apt-get install re2c libfuse2 gnat-12 gprbuild
+         run: sudo apt-get install re2c libfuse2 gnat gprbuild
        - name: Setup Alire
          run: |
            alr index --update-all
-           alr toolchain --select gnat_external^12.3
        - name: Get alr2appimage
          run: |
            curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-0.9.3-x86_64.AppImage
            chmod +x alr2appimage-0.9.3-x86_64.AppImage
        - name: Get emacs_ada_mode
-         run: alr get emacs_ada_mode
-       - name: Patch gpr (remove when fixed upstream)
-         run: sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
+         run: |
+           git clone https://github.com/mgrojo/ada-mode.git emacs_ada_mode
+           cd emacs_ada_mode
+           git checkout mgrojo-ada-mode-binaries
        - name: Build AppImage
          run: |
-           cd emacs_ada_mode*
-           alr toolchain --select gnat_external^12.3 gprbuild^18.0
+           cd emacs_ada_mode
+           alr toolchain --select gnat_native^12 gprbuild^22
            alr --non-interactive build --release -- -bargs -static
            VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
        - name: Release

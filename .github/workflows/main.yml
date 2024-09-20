@@ -27,22 +27,20 @@ jobs:
        - name: Setup Alire
          run: |
            alr index --update-all
-           alr toolchain --select gnat_native^12 gprbuild^22
        - name: Get alr2appimage
          run: |
            curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-0.9.3-x86_64.AppImage
            chmod +x alr2appimage-0.9.3-x86_64.AppImage
        - name: Get emacs_ada_mode
-         run: yes | alr get emacs_ada_mode
-       - name: Patch gpr and re2c requirement (remove if fixed upstream)
          run: |
-           sed -i~ 's%ada_annex_p_lr1_parse_table.txt%bin/ada_annex_p_lr1_re2c_parse_table.txt%g' emacs_ada_mode*/emacs_ada_mode.gpr
-           sed -i~ 's%re2c = ">=2\.0\.3"%re2c = ">=1.3"%' emacs_ada_mode*/alire.toml
+           git clone https://github.com/mgrojo/ada-mode.git emacs_ada_mode
+           cd emacs_ada_mode
+           git checkout mgrojo-ada-mode-binaries
        - name: Build AppImage
          run: |
-           cd emacs_ada_mode*
-           yes | alr toolchain --select gnat_native^12 gprbuild^22
-           yes | alr build --release -- -bargs -static
+           cd emacs_ada_mode
+           alr toolchain --select gnat_native^12 gprbuild^22
+           alr --non-interactive build --release -- -bargs -static
            VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_ada_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
        - name: Release
          uses: softprops/action-gh-release@v2

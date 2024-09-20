@@ -27,6 +27,4 @@ The executables are dynamically linked with GNAT 12. Thus, unless you have GNAT 
 mv squashfs-root/usr/lib/* ~/.local/lib
 ```
 
-Due to the version requirement on re2c, it was not possible to use the oldest supported Ubuntu LTS release, as recommended by the AppImage project. Consequently, older systems could have incompatiblities with the dynamically linked libc version.
-
-You can take a look at how they are built in [.github/workflows/main.yml](.github/workflows/main.yml).
+Due to the version requirement on re2c, it was not possible to use the oldest supported Ubuntu LTS release, as recommended by the AppImage project. In order to fix that, I've patched ada-mode in this [fork and branch](https://github.com/mgrojo/ada-mode/tree/mgrojo-ada-mode-binaries). That repository is cloned by the GitHub action in order to build on Ubuntu 20.04. You can take a look at how the binaries are built and then pushed directly to Releases in [.github/workflows/main.yml](.github/workflows/main.yml).

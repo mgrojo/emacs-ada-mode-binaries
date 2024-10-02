@@ -1,5 +1,5 @@
 # Build using Alire.
-name: Build
+name: Build gpr-mode
 
 on:
   push:

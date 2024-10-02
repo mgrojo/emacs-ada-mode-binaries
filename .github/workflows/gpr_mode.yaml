@@ -1,0 +1,50 @@
+# Build using Alire.
+name: Build gpr-mode
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions: write-all
+
+jobs:
+  release:
+    name: Alire Latest
+    runs-on: ubuntu-20.04
+    steps:    
+       - name: Checkout
+         uses: actions/checkout@v2
+       - name: alire-project/setup-alire
+         uses: alire-project/setup-alire@v2
+         with:
+            branch: "master"
+       - name: Update apt
+         run: sudo apt-get update
+       - name: Install dependencies of ada-mode and linuxdeploy
+         run: sudo apt-get install re2c libfuse2 gnat gprbuild
+       - name: Setup Alire
+         run: |
+           alr index --update-all
+       - name: Get alr2appimage
+         run: |
+           curl --remote-name --location https://github.com/mgrojo/alr2appimage/releases/download/v0.9.3/alr2appimage-0.9.3-x86_64.AppImage
+           chmod +x alr2appimage-0.9.3-x86_64.AppImage
+       - name: Get emacs_gpr_mode
+         run: |
+           git clone https://github.com/mgrojo/ada-mode.git emacs_gpr_mode
+           cd emacs_gpr_mode
+           git checkout mgrojo-gpr-mode-binaries
+       - name: Build AppImage
+         run: |
+           cd emacs_gpr_mode
+           alr toolchain --select gnat_native^12 gprbuild^22
+           alr --non-interactive build --release -- -bargs -static
+           VERSION=$(printf $(alr show | awk -v FS=[=:] '/emacs_gpr_mode=/ {print $2}')) ../alr2appimage-0.9.3-x86_64.AppImage
+       - name: Release
+         uses: softprops/action-gh-release@v2
+         with:
+           files: emacs_gpr_mode*/emacs_gpr_mode*.AppImage
+           prerelease: true
+           tag_name: latest_alire
